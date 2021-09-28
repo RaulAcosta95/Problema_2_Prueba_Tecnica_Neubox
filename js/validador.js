@@ -14,7 +14,7 @@ function validadorDeArchivo(e){
         alert('Por favor, sube un archivo con la extensión .txt');
         console.log('Borra el archivo');
         inputArchivo.value = '';
-        divValidación.innerHTML="";
+        divValidación.innerHTML = "";
         return false;
 
     }else{
@@ -39,24 +39,31 @@ function validadorContenidoArchivo(contenido) {
 
     let líneasContenido = contenido.split('\n');
     let númeroRondas = líneasContenido[0];
-    let arrayPuntajes;
+
     if(númeroRondas != (líneasContenido.length-1)){
+
         alert('Número de Rondas Diferente a Cantidad de Puntajes \n'+númeroRondas + " != " + (líneasContenido.length-1));
         console.log(númeroRondas + " != " + (líneasContenido.length-1));
         return false;
+
     }else if(númeroRondas <0 || númeroRondas > 10000){
+
         alert('Número de Rondas no Válido');
         console.log('Número de Rondas no Válido' + númeroRondas);
+
     }
     for (let i = 1; i < líneasContenido.length; i++) {
         
         let puntajes = líneasContenido[i].split(' ');
         let puntajePrimerJugador = puntajes[0];
         let puntajeSegundoJugador = puntajes[1];
+
         if(isNaN(puntajePrimerJugador) || isNaN(puntajeSegundoJugador)){
+
             alert(puntajePrimerJugador + " o " + puntajeSegundoJugador + " no es un número");
             console.log(puntajePrimerJugador + " o " + puntajeSegundoJugador + " no es un número");
             return false;
+
         } else{
         }
     }
@@ -64,7 +71,6 @@ function validadorContenidoArchivo(contenido) {
 }
 //A partir de aquí identifica el ganador y su ventaja
 function identificaGanador(líneasContenido){
-    console.log('Puede identificar ganador');
     let arrayDiferencias=new Array()
 
     for (let i = 1; i < líneasContenido.length; i++) {
@@ -75,6 +81,7 @@ function identificaGanador(líneasContenido){
 
         //-1 porque i empieza en 1
         if(puntajePrimerJugador > puntajeSegundoJugador){
+
             let diferencia = puntajePrimerJugador-puntajeSegundoJugador;
 
             arrayDiferencias[i-1]=new Array()
@@ -82,6 +89,7 @@ function identificaGanador(líneasContenido){
             arrayDiferencias[i-1][1]=diferencia;
 
         } else if(puntajeSegundoJugador > puntajePrimerJugador){
+
             let diferencia = puntajeSegundoJugador-puntajePrimerJugador;
 
             arrayDiferencias[i-1]=new Array()
@@ -99,7 +107,7 @@ function identificaGanador(líneasContenido){
         // Recorres el valor del array «numeros»:
         for ( let numero of arrayDiferencias[i] ) {
             // Evalúa si «max» es menor que «numero» para almacenar
-            // en él el número más grande hasta el momento:
+            // en él el número más grande hasta el momento
             if (max < numero){
                 max = numero;
             }
@@ -110,36 +118,51 @@ function identificaGanador(líneasContenido){
     for (let i = 0; i < arrayDiferencias.length; i++) {
         // Recorres el valor del array «numeros»:
         if(arrayDiferencias[i][1] == max){
+
             console.log(arrayDiferencias[i][0]);
             console.log(arrayDiferencias[i][1]);
             muestraEnPantallaValidación(arrayDiferencias[i][0],arrayDiferencias[i][1]);
+
         }
     }
 }
 
 function muestraEnPantallaValidación(jugadorVictorioso, ventaja){
+
     divValidación.innerHTML=`<p>${jugadorVictorioso}, ${ventaja}</p>`;
     generaBotonDescarga(`${jugadorVictorioso}, ${ventaja}`);
+
 }
 
 function generaBotonDescarga(text){
+
     let divDescarga = document.getElementById('divDescarga');
     divDescarga.innerHTML = `<input type="button" id="dwn-btn" value="Descargar archivo"/>`;
+
     // Start file download.
     document.getElementById("dwn-btn").addEventListener("click", function(){
-        // Generate download of hello.txt file with some content
+        // Generate download of resultado.txt file with some content
         let filename = "resultado.txt";
         download(filename, text);
     }, false);
+
 }
 
 function download(filename, text) {
+
     let element = document.createElement('a');
+
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+
     element.setAttribute('download', filename);
+
     element.style.display = 'none';
+
     document.body.appendChild(element);
+
     element.click();
+
     document.body.removeChild(element);
+    
 }
 
